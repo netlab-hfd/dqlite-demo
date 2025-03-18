@@ -38,6 +38,14 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&diskMode, "disk-mode", false, "use diskmode")
 
 	join = rootCmd.PersistentFlags().StringSlice("join", []string{}, "List of nodes to form a cluster")
+
+	if err := rootCmd.MarkPersistentFlagRequired("api"); err != nil {
+		panic(err)
+	}
+
+	if err := rootCmd.MarkPersistentFlagRequired("db"); err != nil {
+		panic(err)
+	}
 }
 
 func Execute() error {
