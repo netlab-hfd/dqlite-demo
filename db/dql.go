@@ -15,34 +15,34 @@ import (
 const schema = "CREATE TABLE IF NOT EXISTS model (key TEXT, value TEXT, UNIQUE(key))"
 
 type DQLConfig struct {
-	db       string
-	cluster  *[]string
-	diskmode bool
-	crt      string
-	key      string
-	dir      string
-	ctx      context.Context
+	Db       string
+	Cluster  *[]string
+	Diskmode bool
+	Crt      string
+	Key      string
+	Dir      string
+	Ctx      context.Context
 }
 
 func NewDqlLiteConnection(config *DQLConfig) (*sql.DB, error) {
 	options := []app.Option{
-		app.WithAddress(config.db),
-		app.WithCluster(*config.cluster),
+		app.WithAddress(config.Db),
+		app.WithCluster(*config.Cluster),
 		app.WithLogFunc(logging.LogFunc),
-		app.WithDiskMode(config.diskmode),
+		app.WithDiskMode(config.Diskmode),
 	}
 
-	if (config.crt != "" && config.key == "") || (config.key != "" && config.crt == "") {
+	if (config.Crt != "" && config.Key == "") || (config.Key != "" && config.Crt == "") {
 		return nil, fmt.Errorf("both tls certificate and a key must be given")
 	}
 
-	if config.crt != "" {
-		cert, err := tls.LoadX509KeyPair(config.crt, config.key)
+	if config.Crt != "" {
+		cert, err := tls.LoadX509KeyPair(config.Crt, config.Key)
 		if err != nil {
 			return nil, err
 		}
 
-		data, err := os.ReadFile(config.crt)
+		data, err := os.ReadFile(config.Crt)
 		if err != nil {
 			return nil, err
 		}
@@ -55,16 +55,16 @@ func NewDqlLiteConnection(config *DQLConfig) (*sql.DB, error) {
 		options = append(options, app.WithTLS(app.SimpleTLSConfig(cert, pool)))
 	}
 
-	app, err := app.New(config.dir)
+	app, err := app.New(config.Dir)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := app.Ready(config.ctx); err != nil {
+	if err := app.Ready(config.Ctx); err != nil {
 		return nil, err
 	}
 
-	db, err := app.Open(config.ctx, "demo")
+	db, err := app.Open(config.Ctx, "demo")
 	if err != nil {
 		return nil, err
 	}
