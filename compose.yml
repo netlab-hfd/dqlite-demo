@@ -1,0 +1,42 @@
+services:
+  dqlite1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dqlite1
+    hostname: dqlite1
+    command: ["--api", "0.0.0.0:8001", "--db", "0.0.0.0:9001", "--dir", "/dqlite"]
+    ports:
+      - "8001:8001"
+    networks:
+      - cluster-net
+  dqlite2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dqlite2
+    hostname: dqlite2
+    command: ["--api", "0.0.0.0:8001", "--db", "0.0.0.0:9001", "--dir", "/dqlite", "--join", "dqlite1:9001"]
+    depends_on:
+      - dqlite1
+    ports:
+      - "8002:8001"
+    networks:
+      - cluster-net
+  dqlite3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dqlite3
+    hostname: dqlite3
+    command: ["--api", "0.0.0.0:8001", "--db", "0.0.0.0:9001", "--dir", "/dqlite", "--join", "dqlite1:9001"]
+    depends_on:
+      - dqlite1
+    ports:
+      - "8003:8001"
+    networks:
+      - cluster-net
+
+networks:
+  cluster-net:
+    driver: bridge
