@@ -5,38 +5,49 @@ services:
       dockerfile: Dockerfile
     container_name: dqlite1
     hostname: dqlite1
-    command: ["--api", "0.0.0.0:8001", "--db", "0.0.0.0:9001", "--dir", "/dqlite"]
+    command: ["--api", "0.0.0.0:8001", "--db", "10.5.0.2:9001", "--dir", "/dqlite"]
     ports:
       - "8001:8001"
+      - "9001:9001"
     networks:
-      - cluster-net
+      cluster-net:
+        ipv4_address: 10.5.0.2
   dqlite2:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: dqlite2
     hostname: dqlite2
-    command: ["--api", "0.0.0.0:8001", "--db", "0.0.0.0:9001", "--dir", "/dqlite", "--join", "dqlite1:9001"]
+    command: ["--api", "0.0.0.0:8001", "--db", "127.0.0.1:9002", "--dir", "/dqlite", "--join", "dqlite1:9001"]
     depends_on:
       - dqlite1
     ports:
       - "8002:8001"
+      - "9002:9002"
     networks:
-      - cluster-net
+      cluster-net:
+        ipv4_address: 10.5.0.3
   dqlite3:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: dqlite3
     hostname: dqlite3
-    command: ["--api", "0.0.0.0:8001", "--db", "0.0.0.0:9001", "--dir", "/dqlite", "--join", "dqlite1:9001"]
+    command: ["--api", "0.0.0.0:8001", "--db", "127.0.0.1:9003", "--dir", "/dqlite", "--join", "dqlite1:9001"]
     depends_on:
       - dqlite1
     ports:
       - "8003:8001"
+      - "9003:9003"
     networks:
-      - cluster-net
+      cluster-net:
+        ipv4_address: 10.5.0.4
+
 
 networks:
   cluster-net:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
