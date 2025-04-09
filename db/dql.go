@@ -39,11 +39,13 @@ func NewDqlLiteConnection(config *DQLConfig) (*sql.DB, error) {
 	if config.Crt != "" {
 		cert, err := tls.LoadX509KeyPair(config.Crt, config.Key)
 		if err != nil {
+			fmt.Println("Certificate error")
 			return nil, err
 		}
 
 		data, err := os.ReadFile(config.Crt)
 		if err != nil {
+			fmt.Println("Cert could not be read")
 			return nil, err
 		}
 
@@ -55,17 +57,20 @@ func NewDqlLiteConnection(config *DQLConfig) (*sql.DB, error) {
 		options = append(options, app.WithTLS(app.SimpleTLSConfig(cert, pool)))
 	}
 
-	app, err := app.New(config.Dir)
+	app, err := app.New(config.Dir, options...)
 	if err != nil {
+		fmt.Println("failed starting app with cluster")
 		return nil, err
 	}
 
 	if err := app.Ready(config.Ctx); err != nil {
+		fmt.Println("app didnt get ready")
 		return nil, err
 	}
 
 	db, err := app.Open(config.Ctx, "demo")
 	if err != nil {
+		fmt.Println("failed connecting to database")
 		return nil, err
 	}
 
