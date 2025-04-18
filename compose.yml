@@ -18,7 +18,7 @@ services:
       dockerfile: Dockerfile
     container_name: dqlite2
     hostname: dqlite2
-    command: ["--api", "0.0.0.0:8001", "--db", "127.0.0.1:9002", "--dir", "/dqlite", "--join", "dqlite1:9001"]
+    command: ["--api", "0.0.0.0:8001", "--db", "10.5.0.3:9002", "--dir", "/dqlite", "--join", "dqlite1:9001"]
     depends_on:
       - dqlite1
     ports:
@@ -33,7 +33,7 @@ services:
       dockerfile: Dockerfile
     container_name: dqlite3
     hostname: dqlite3
-    command: ["--api", "0.0.0.0:8001", "--db", "127.0.0.1:9003", "--dir", "/dqlite", "--join", "dqlite1:9001"]
+    command: ["--api", "0.0.0.0:8001", "--db", "10.5.0.4:9003", "--dir", "/dqlite", "--join", "dqlite1:9001"]
     depends_on:
       - dqlite1
     ports:
