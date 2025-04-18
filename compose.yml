@@ -43,7 +43,8 @@ services:
       cluster-net:
         ipv4_address: 10.5.0.4
 
-
+# It is necessary to setup static IP addresses because DQLite advertises the address that it gets bound to,
+# making it impossible to use 0.0.0.0:9001 or 127.0.0.1:9001 as bind address. By using a static pool addresses are known beforehand. 
 networks:
   cluster-net:
     driver: bridge
