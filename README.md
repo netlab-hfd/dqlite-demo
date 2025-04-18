@@ -1,8 +1,19 @@
 # DQLite Demo Application
-This Repository contains the example application from [go-dqlite](https://github.com/canonical/go-dqlite), packaged
-as a container image with a compose file for convenience.
+This repository contains a containerized version of the [go-dqlite](https://github.com/canonical/go-dqlite) demo application.
+It showcases DQLite’s clustering and failover behavior through a simple key-value store, packaged with Docker Compose for convenience.
+
+- DQLite is a lightweight, distributed SQLite database with Raft-based replication for fault tolerance.
 
 ## Getting started
+
+### Prerequisites
+To run this demo, you need the following requirements on your machine:
+
+- Git must be installed
+- [Docker](https://www.docker.com/get-started/) or [Podman](https://podman.io/docs/installation) must be installed
+
+
+### Setup
 To run the demo, clone the repository by running 
 ```bash
 git clone https://github.com/netlab-hfd/dqlite-demo.git
@@ -16,6 +27,8 @@ docker compose up
 
 This starts three containers running the sample application with a clustered DQLite database. The sample application 
 exposes an HTTP API which can be used to set and read key-value pairs. It is reachable at ports 8001, 8002 and 8003.
+
+### Usage
 For example, you can set a value with this curl:
 
 ```bash
@@ -46,8 +59,8 @@ curl localhost:8003/mykey
 You can play around a little bit more by killing and restarting containers and testing how the application behaves.
 Look at the output of the compose command for feedback on what DQLite is currently doing.
 
-## Why create this when a demo already exists?
-The approved demo application from Canonical is not containerized and expects that everything is installed locally.
-DQLite is only working on Linux as of now and only packaged for Ubuntu, making it hard to play around with it. By
-wrapping it in containers, the hurdle to get started is lowered significantly and a lot of headaches for the users are 
-saved.
+## Why this demo?
+The official Canonical demo is not containerized and assumes a local Linux setup (only packaged for Ubuntu).
+This makes it harder for others to experiment with DQLite.
+
+By wrapping the demo in containers, this project lowers the barrier to entry and enables quick experimentation without local setup headaches.
