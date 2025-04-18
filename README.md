@@ -2,7 +2,7 @@
 This repository contains a containerized version of the [go-dqlite](https://github.com/canonical/go-dqlite) demo application.
 It showcases DQLite’s clustering and failover behavior through a simple key-value store, packaged with Docker Compose for convenience.
 
-- DQLite is a lightweight, distributed SQLite database with Raft-based replication for fault tolerance.
+- DQLite is a lightweight, distributed SQLite database with [Raft-based](https://raft.github.io/) replication for fault tolerance.
 
 ## Getting started
 
